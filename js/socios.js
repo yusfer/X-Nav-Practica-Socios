@@ -46,7 +46,8 @@ function actualiza(line,tabla){
 				anterior =$(tabla).html();
 				valorboton(0)
 			}else{
-				valorboton()	//si no es update.json, que actualice el valor del botón
+				if(line=="mytimeline.json"){valorboton(0)}else{valorboton()}
+					//si no es update.json, que actualice el valor del botón
 			}
 			$(tabla).html(list + anterior);
 			$(tabla).accordion({active: true});
