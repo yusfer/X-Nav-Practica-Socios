@@ -4,7 +4,6 @@ jQuery(document).ready(function() {
 		$( "#tabs" ).tabs();
 	});
 	actualiza("timeline.json","#tabs-1")
-	
 	// CUANDO PINCHO EN ALGUNA PESTAÑA ACTUALIZO ///
 	$("#mytim").click(function(){	
 		actualiza("mytimeline.json","#tabs-2")
@@ -38,16 +37,17 @@ function actualiza(line,tabla){
 		
 		}).done(function(){
 			
-			
-			
 			list = ""
 			anterior = ""
 			for(i=0;i<aux.items.length;i++){		//descargo json y preparo en formato de salida
 				list = list + preparotexto(aux.items[i])
 			}
-			if(line=="update.json")		//si es del update, lo muestra a continuación de lo anterior
+			if(line=="update.json"){	//si es del update, lo muestra a continuación de lo anterior
 				anterior =$(tabla).html();
-			
+				valorboton(0)
+			}else{
+				valorboton()	//si no es update.json, que actualice el valor del botón
+			}
 			$(tabla).html(list + anterior);
 			$(tabla).accordion({active: true});
 			
@@ -69,5 +69,30 @@ function preparotexto(item){
 	texto = "<h3>"+list+"</h3><div><p>" + list2 +"</p></div>"
 	
 	return texto
+	
+}
+
+function valorboton(val){
+	
+		if(val==0){$(newmsg).hide()}else{
+
+		$.getJSON("update.json",function(data){
+	
+		aux=data
+		
+		}).done(function(){
+			
+			valor = aux.items.length
+			$(newmsg).text(valor + " Mensajes Nuevos");
+			if (valor==0){
+				$(newmsg).hide()
+			}else{
+				$(newmsg).show()
+			}
+		})
+	}
+	
+		
+	
 	
 }
