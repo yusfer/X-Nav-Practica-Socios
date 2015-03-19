@@ -3,22 +3,31 @@ jQuery(document).ready(function() {
 	$(function() {
 		$( "#tabs" ).tabs();
 	});
+	actualiza("timeline.json","#tabs-1")
 	
-	$("#mytim").click(function(){	//ASÍ CAMBIO CONTENIDO
+	// CUANDO PINCHO EN ALGUNA PESTAÑA ACTUALIZO ///
+	$("#mytim").click(function(){	
 		actualiza("mytimeline.json","#tabs-2")
 	});
-	$("#tim").click(function(){	//ASÍ CAMBIO CONTENIDO
+	$("#tim").click(function(){	
 		actualiza("timeline.json","#tabs-1")
 	});
-
+	////////////////////////////////////////////////
+	
+	// PINCHO BOTÓN DE UPDATE.JSON //
+	$("#newmsg").click(function(){	
+		actualiza("update.json","#tabs-1")
+	});
+	/////////////////////////////////
 });
 
+// actualizar el timeline determinado
 function actualiza(line,tabla){
 	aux=null;
 	
-	compruebo = $(tabla).accordion("instance")
+	compruebo = $(tabla).accordion("instance")		//iniciamos instancia de accordion 
 	
-	if(compruebo!=undefined){
+	if(compruebo!=undefined){						//si ya había una, destruimos y volvemos a iniciar
 		$(tabla).accordion("destroy")
 		$(tabla).accordion("instance")
 	}
@@ -28,19 +37,24 @@ function actualiza(line,tabla){
 		aux=data
 		
 		}).done(function(){
-		
+			
+			
+			
 			list = ""
-			for(i=0;i<aux.items.length;i++){
+			anterior = ""
+			for(i=0;i<aux.items.length;i++){		//descargo json y preparo en formato de salida
 				list = list + preparotexto(aux.items[i])
 			}
+			if(line=="update.json")		//si es del update, lo muestra a continuación de lo anterior
+				anterior =$(tabla).html();
 			
-			$(tabla).html(list);
+			$(tabla).html(list + anterior);
 			$(tabla).accordion({active: true});
 			
 		})
 	 
 }
-
+//función que organiza el formato de salida de cada mensaje
 function preparotexto(item){
 	
 	texto = null;
